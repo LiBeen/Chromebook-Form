@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chromebook Return Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .form-section {
+            padding: 40px;
+        }
+        
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #333;
+            font-size: 1.1em;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4facfe;
+            box-shadow: 0 0 0 3px rgba(79, 172, 254, 0.1);
+            background: white;
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border: 2px solid #e1e5e9;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+        
+        .checkbox-item:hover {
+            border-color: #4facfe;
+            background: white;
+        }
+        
+        .checkbox-item input[type="checkbox"] {
+            width: auto;
+            margin-right: 10px;
+            transform: scale(1.2);
+        }
+        
+        .submit-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 18px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+        
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        
+        .confirmation-section {
+            display: none;
+            padding: 15px;
+            background: #f8f9fa;
+            border-top: 2px solid #4facfe;
+        }
+        
+        .confirmation-header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        
+        .confirmation-header h2 {
+            color: #333;
+            font-size: 1.4em;
+            margin-bottom: 5px;
+        }
+        
+        .confirmation-header p {
+            font-size: 0.9em;
+            margin: 0;
+        }
+        
+        .confirmation-details {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 15px;
+        }
+        
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #e1e5e9;
+            font-size: 0.9em;
+        }
+        
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+        
+        .detail-label {
+            font-weight: bold;
+            color: #666;
+            font-size: 0.85em;
+        }
+        
+        .detail-value {
+            color: #333;
+            font-weight: 500;
+            font-size: 0.85em;
+        }
+        
+        .signature-section {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .signature-pad {
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            cursor: crosshair;
+            background: white;
+        }
+        
+        .signature-label {
+            text-align: center;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+            font-size: 0.8em;
+        }
+        
+        .signature-controls {
+            text-align: center;
+            margin-top: 5px;
+        }
+        
+        .clear-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 0.7em;
+        }
+        
+        .final-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .action-btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            font-size: 0.9em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .screenshot-btn {
+            background: #28a745;
+            color: white;
+        }
+        
+        .new-form-btn {
+            background: #6c757d;
+            color: white;
+        }
+        
+        .timestamp {
+            text-align: center;
+            color: #666;
+            font-size: 0.7em;
+            margin-top: 10px;
+        }
+        
+        @media (max-width: 768px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .checkbox-group {
+                grid-template-columns: 1fr;
+            }
+            
+            .signature-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Arts High School</h1>
+            <h2>📱 Chromebook Collection Information</h2>
+            <p>School Year 2024/25</p>
+        </div>
+        
+        <div class="form-section" id="formSection">
+            <div style="background: #fff3cd; border: 2px solid #ffc107; border-radius: 10px; padding: 20px; margin-bottom: 30px; text-align: center;">
+                <strong style="color: #856404; font-size: 1.2em;">⚠️ IMPORTANT: Please double check all numerical values are written accurately prior to submission.</strong>
+            </div>
+            
+            <form id="chromebookForm">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="studentInitials">Student Initials:</label>
+                        <input type="text" id="studentInitials" name="studentInitials" required maxlength="3" placeholder="e.g., JD">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="gradeLevel">Grade Level:</label>
+                        <select id="gradeLevel" name="gradeLevel" required>
+                            <option value="">Select Grade</option>
+                            <option value="9">9th Grade</option>
+                            <option value="10">10th Grade</option>
+                            <option value="11">11th Grade</option>
+                            <option value="12">12th Grade</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="assetTag">Asset Tag Number:</label>
+                        <input type="text" id="assetTag" name="assetTag" required placeholder="Enter asset tag number">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="staffMember">Staff Member:</label>
+                        <input type="text" id="staffMember" name="staffMember" required placeholder="Staff member name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="returnLocation">Return Location:</label>
+                        <select id="returnLocation" name="returnLocation" required>
+                            <option value="">Select Location</option>
+                            <option value="Main Office">Main Office</option>
+                            <option value="Library/Media Center">Library/Media Center</option>
+                            <option value="IT Department">IT Department</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group full-width">
+                    <label>Chromebook Condition Check:</label>
+                    <div class="checkbox-group">
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="powersOn" name="powersOn">
+                            <label for="powersOn">Powers On</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="screenIntact" name="screenIntact">
+                            <label for="screenIntact">Screen Intact</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="keyboardFunctional" name="keyboardFunctional">
+                            <label for="keyboardFunctional">Keyboard Functional</label>
+                        </div>
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="touchpadWorks" name="touchpadWorks">
+                            <label for="touchpadWorks">Touchpad Works</label>
+                        </div>
+None
+                        <div class="checkbox-item">
+                            <input type="checkbox" id="chargerIncluded" name="chargerIncluded">
+                            <label for="chargerIncluded">Charger Included</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">Generate Confirmation Form</button>
+            </form>
+        </div>
+        
+        <div class="confirmation-section" id="confirmationSection">
+            <div class="confirmation-header">
+                <h2>📋 Arts High School - Collection Form</h2>
+                <p>School Year 2024/25 - Please Review & Sign</p>
+            </div>
+            
+            <div class="confirmation-details" id="confirmationDetails"></div>
+            
+            <div class="signature-section">
+                <div>
+                    <div class="signature-label">Student Signature</div>
+                    <canvas class="signature-pad" id="studentSignature" width="140" height="80"></canvas>
+                    <div class="signature-controls">
+                        <button type="button" class="clear-btn" onclick="clearSignature('studentSignature')">Clear</button>
+                    </div>
+                </div>
+                
+                <div>
+                    <div class="signature-label">Staff Signature</div>
+                    <canvas class="signature-pad" id="staffSignature" width="140" height="80"></canvas>
+                    <div class="signature-controls">
+                        <button type="button" class="clear-btn" onclick="clearSignature('staffSignature')">Clear</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="final-actions">
+                <button type="button" class="action-btn screenshot-btn" onclick="takeScreenshot()">
+                    📸 Ready for Screenshot
+                </button>
+                <button type="button" class="action-btn new-form-btn" onclick="newForm()">
+                    📝 New Form
+                </button>
+            </div>
+            
+            <div class="timestamp" id="timestamp"></div>
+        </div>
+    </div>
+
+    <script>
+        let isDrawing = false;
+        let formData = {};
+        
+        // Initialize signature pads
+        function initializeSignaturePads() {
+            const pads = ['studentSignature', 'staffSignature'];
+            pads.forEach(padId => {
+                const canvas = document.getElementById(padId);
+                const ctx = canvas.getContext('2d');
+                
+                // Set canvas style
+                ctx.strokeStyle = '#000';
+                ctx.lineWidth = 2;
+                ctx.lineCap = 'round';
+                
+                // Mouse events
+                canvas.addEventListener('mousedown', startDrawing);
+                canvas.addEventListener('mousemove', draw);
+                canvas.addEventListener('mouseup', stopDrawing);
+                canvas.addEventListener('mouseout', stopDrawing);
+                
+                // Touch events for mobile
+                canvas.addEventListener('touchstart', handleTouch);
+                canvas.addEventListener('touchmove', handleTouch);
+                canvas.addEventListener('touchend', stopDrawing);
+            });
+        }
+        
+        function startDrawing(e) {
+            isDrawing = true;
+            const canvas = e.target;
+            const rect = canvas.getBoundingClientRect();
+            const ctx = canvas.getContext('2d');
+            ctx.beginPath();
+            ctx.moveTo(e.clientX - rect.left, e.clientY - rect.top);
+        }
+        
+        function draw(e) {
+            if (!isDrawing) return;
+            const canvas = e.target;
+            const rect = canvas.getBoundingClientRect();
+            const ctx = canvas.getContext('2d');
+            ctx.lineTo(e.clientX - rect.left, e.clientY - rect.top);
+            ctx.stroke();
+        }
+        
+        function stopDrawing() {
+            isDrawing = false;
+        }
+        
+        function handleTouch(e) {
+            e.preventDefault();
+            const touch = e.touches[0];
+            const mouseEvent = new MouseEvent(e.type === 'touchstart' ? 'mousedown' : 
+                                            e.type === 'touchmove' ? 'mousemove' : 'mouseup', {
+                clientX: touch.clientX,
+                clientY: touch.clientY
+            });
+            e.target.dispatchEvent(mouseEvent);
+        }
+        
+        function clearSignature(canvasId) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+        
+        function calculateClassYear(grade) {
+            const currentYear = new Date().getFullYear();
+            const gradeNum = parseInt(grade);
+            return currentYear + (12 - gradeNum) + 1;
+        }
+        
+        // Wait for DOM to load
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('chromebookForm');
+            const submitBtn = document.querySelector('.submit-btn');
+            
+            // Add click event to submit button
+            submitBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                handleFormSubmission();
+            });
+            
+            // Also handle form submit event
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                handleFormSubmission();
+            });
+        });
+        
+        function handleFormSubmission() {
+            const form = document.getElementById('chromebookForm');
+            const formData_temp = new FormData(form);
+            
+            // Get all form values
+            const studentInitials = document.getElementById('studentInitials').value.trim();
+            const gradeLevel = document.getElementById('gradeLevel').value;
+            const assetTag = document.getElementById('assetTag').value.trim();
+            const staffMember = document.getElementById('staffMember').value.trim();
+            const returnLocation = document.getElementById('returnLocation').value;
+            
+            // Validate required fields
+            if (!studentInitials) {
+                alert('Please enter student initials');
+                return;
+            }
+            if (!gradeLevel) {
+                alert('Please select grade level');
+                return;
+            }
+            if (!assetTag) {
+                alert('Please enter asset tag number');
+                return;
+            }
+            if (!staffMember) {
+                alert('Please enter staff member name');
+                return;
+            }
+            if (!returnLocation) {
+                alert('Please select return location');
+                return;
+            }
+            
+            // Store form data globally
+            formData = {
+                studentInitials: studentInitials,
+                gradeLevel: gradeLevel,
+                classYear: calculateClassYear(gradeLevel),
+                assetTag: assetTag,
+                staffMember: staffMember,
+                returnLocation: returnLocation,
+                powersOn: document.getElementById('powersOn').checked,
+                screenIntact: document.getElementById('screenIntact').checked,
+                keyboardFunctional: document.getElementById('keyboardFunctional').checked,
+                touchpadWorks: document.getElementById('touchpadWorks').checked,
+                chargerIncluded: document.getElementById('chargerIncluded').checked,
+                returnDate: new Date().toLocaleDateString(),
+                returnTime: new Date().toLocaleTimeString()
+            };
+            
+            // Generate confirmation display
+            generateConfirmation();
+            
+            // Show confirmation section
+            document.getElementById('formSection').style.display = 'none';
+            document.getElementById('confirmationSection').style.display = 'block';
+            
+            // Initialize signature pads
+            setTimeout(initializeSignaturePads, 100);
+            
+            // Set timestamp
+            document.getElementById('timestamp').textContent = 
+                `Form completed on ${formData.returnDate} at ${formData.returnTime}`;
+        }
+        
+        function generateConfirmation() {
+            const details = document.getElementById('confirmationDetails');
+            details.innerHTML = `
+                <div class="detail-row">
+                    <span class="detail-label">Student Initials:</span>
+                    <span class="detail-value">${formData.studentInitials}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Grade Level:</span>
+                    <span class="detail-value">${formData.gradeLevel}th Grade</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Class of:</span>
+                    <span class="detail-value">${formData.classYear}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Asset Tag:</span>
+                    <span class="detail-value">${formData.assetTag}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Staff Member:</span>
+                    <span class="detail-value">${formData.staffMember}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Return Location:</span>
+                    <span class="detail-value">${formData.returnLocation}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Return Date:</span>
+                    <span class="detail-value">${formData.returnDate}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Return Time:</span>
+                    <span class="detail-value">${formData.returnTime}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Powers On:</span>
+                    <span class="detail-value">${formData.powersOn ? '✅ Yes' : '❌ No'}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Screen Intact:</span>
+                    <span class="detail-value">${formData.screenIntact ? '✅ Yes' : '❌ No'}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Keyboard Functional:</span>
+                    <span class="detail-value">${formData.keyboardFunctional ? '✅ Yes' : '❌ No'}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Touchpad Works:</span>
+                    <span class="detail-value">${formData.touchpadWorks ? '✅ Yes' : '❌ No'}</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Charger Included:</span>
+                    <span class="detail-value">${formData.chargerIncluded ? '✅ Yes' : '❌ No'}</span>
+                </div>
+            `;
+        }
+        
+        function takeScreenshot() {
+            alert('📸 Ready for screenshot! Use your device\'s screenshot function to capture this confirmation form. The form is now complete and ready for your records.');
+        }
+        
+        function newForm() {
+            // Reset form
+            document.getElementById('chromebookForm').reset();
+            document.getElementById('formSection').style.display = 'block';
+            document.getElementById('confirmationSection').style.display = 'none';
+            
+            // Clear signatures
+            clearSignature('studentSignature');
+            clearSignature('staffSignature');
+            
+            // Scroll to top
+            window.scrollTo(0, 0);
+        }
+    </script>
+</body>
+</html>
