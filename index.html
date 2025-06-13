@@ -808,26 +808,40 @@
         }
         
         function copyToClipboard() {
-            // Create current submission data (no headers, just data)
+            // Determine if repair is needed based on checkboxes
+            const needsRepair = !formData.powersOn || !formData.screenIntact || !formData.keyboardFunctional || !formData.touchpadWorks || !formData.chargerIncluded;
+            const repairStatus = needsRepair ? "YES, THE DEVICE NEEDS TO BE SERVICED." : "NO, THE DEVICE DOES NOT NEED TO BE SERVICED.";
+            
+            // Create comment column with all remaining information
+            const commentInfo = `Student: ${formData.studentInitials}, Grade: ${formData.gradeLevel}th, Class of: ${formData.classYear}, Staff: ${formData.staffMember}, Location: ${formData.returnLocation}, Date: ${formData.returnDate}, Time: ${formData.returnTime}, Powers On: ${formData.powersOn ? 'Yes' : 'No'}, Screen Intact: ${formData.screenIntact ? 'Yes' : 'No'}, Keyboard Functional: ${formData.keyboardFunctional ? 'Yes' : 'No'}, Touchpad Works: ${formData.touchpadWorks ? 'Yes' : 'No'}, Charger Included: ${formData.chargerIncluded ? 'Yes' : 'No'}, Student Signature: ${getSignatureData('studentSignature') ? 'Signed' : 'Not Signed'}, Staff Signature: ${getSignatureData('staffSignature') ? 'Signed' : 'Not Signed'}`;
+            
+            // Create row with requested format: 4 blanks, asset tag, 5 blanks, repair status, 203, comment
             const row = [
-                `${formData.returnDate} ${formData.returnTime}`,
-                formData.studentInitials,
-                formData.gradeLevel,
-                formData.classYear,
-                formData.assetTag,
-                formData.staffMember,
-                formData.returnLocation,
-                formData.returnDate,
-                formData.returnTime,
-                formData.powersOn ? 'Yes' : 'No',
-                formData.screenIntact ? 'Yes' : 'No',
-                formData.keyboardFunctional ? 'Yes' : 'No',
-                formData.touchpadWorks ? 'Yes' : 'No',
-                formData.chargerIncluded ? 'Yes' : 'No',
-                getSignatureData('studentSignature') ? 'Signed' : 'Not Signed',
-                getSignatureData('staffSignature') ? 'Signed' : 'Not Signed'
+                '', '', '', '',  // 4 blank cells
+                formData.assetTag,  // Asset tag
+                '', '', '', '', '',  // 5 blank cells
+                repairStatus,  // Repair needed response
+                '203',  // Fixed code
+                commentInfo  // All remaining information as comment
             ];
             
+            // Create tab-separated row for Excel
+            const excelData = row.join('\t');
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(excelData).then(() => {
+                // Show success message
+                const successMsg = document.getElementById('successMessage');
+                successMsg.style.display = 'block';
+                setTimeout(() => {
+                    successMsg.style.display = 'none';
+                }, 3000);
+            }).catch(err => {
+                alert('Failed to copy to clipboard. Please try again.');
+                console.error('Copy failed:', err);
+            });
+        }
+                    
             // Create tab-separated row for Excel
             const excelData = row.join('\t');
             
