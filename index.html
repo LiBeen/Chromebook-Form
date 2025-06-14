@@ -564,11 +564,9 @@
                 const canvas = document.getElementById(padId);
                 const ctx = canvas.getContext('2d');
                 
-                // Set canvas actual size to match display size
-                const rect = canvas.getBoundingClientRect();
-                canvas.width = rect.width * window.devicePixelRatio;
-                canvas.height = rect.height * window.devicePixelRatio;
-                ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+                // Set canvas actual size
+                canvas.width = 300;
+                canvas.height = 70;
                 
                 // Set canvas style
                 ctx.strokeStyle = '#000';
@@ -741,8 +739,20 @@
             // Add class to make container taller for confirmation
             document.querySelector('.container').classList.add('confirmation-mode');
             
-            // Initialize signature pads
-            setTimeout(initializeSignaturePads, 100);
+            // Initialize signature pads after DOM updates
+            setTimeout(() => {
+                initializeSignaturePads();
+                // Force canvas resize after initialization
+                const pads = ['studentSignature', 'staffSignature'];
+                pads.forEach(padId => {
+                    const canvas = document.getElementById(padId);
+                    const rect = canvas.getBoundingClientRect();
+                    canvas.width = 300;
+                    canvas.height = 70;
+                    canvas.style.width = rect.width + 'px';
+                    canvas.style.height = rect.height + 'px';
+                });
+            }, 200);
             
             // Set timestamp
             document.getElementById('timestamp').textContent = 
