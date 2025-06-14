@@ -665,13 +665,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const form = document.getElementById('chromebookForm');
             const submitBtn = document.querySelector('.submit-btn');
-            
-            // Add click event to submit button
-            submitBtn.addEventListener('click', function(e) {
-                e.preventDefault();
-                handleFormSubmission();
-            });
-            
+                       
             // Also handle form submit event
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
